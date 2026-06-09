@@ -1,0 +1,151 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{hyperref}
+\geometry{margin=2.5cm}
+
+\title{Práctica de laboratorio: Quicksort en la práctica}
+\author{Análisis y Diseño de Algoritmos}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Contexto}
+
+En las diapositivas del curso se presenta quicksort como un algoritmo de ordenamiento muy práctico, basado en dividir el arreglo alrededor de un pivote y ordenar recursivamente las dos partes. Además, se indica que quicksort suele ser más rápido que merge sort en la práctica, pero que su rendimiento depende de detalles de implementación. En esta práctica se usará una base de código para implementar quicksort, medir su comportamiento y comparar sus resultados con merge sort.
+
+La práctica sigue el enfoque de estudio de caso propuesto por Ferri y Vidal: partir de un algoritmo conocido, instrumentarlo, obtener medidas empíricas y representar gráficamente los resultados para discutir el comportamiento observado. El énfasis no estará en una demostración matemática extensa, sino en la medición controlada, la repetibilidad y la interpretación técnica de los datos.
+
+\section{Duración}
+
+La práctica está diseñada para desarrollarse en una sesión de laboratorio de 1 hora y 30 minutos.
+
+\section{Objetivos}
+
+\begin{enumerate}[label=\arabic*.]
+  \item Implementar correctamente la partición de quicksort dentro de una base de código proporcionada.
+  \item Ejecutar un experimento pequeño y repetible para comparar quicksort y merge sort.
+  \item Verificar automáticamente que los arreglos quedan ordenados después de cada ejecución.
+  \item Registrar mediciones de tiempo en formato CSV.
+  \item Generar gráficos simples que permitan comparar los tiempos obtenidos.
+  \item Interpretar los resultados considerando el tamaño de entrada y el tipo de entrada.
+\end{enumerate}
+
+\section{Repositorio base}
+
+Se entregará un repositorio con la siguiente estructura:
+
+\begin{verbatim}
+quicksort-lab/
+  Makefile
+  README.md
+  include/
+  src/
+  scripts/
+  results/
+  doc/
+\end{verbatim}
+
+El código ya incluye generación de arreglos, medición de tiempo, verificación de ordenamiento, una implementación de merge sort y scripts básicos para ejecutar el experimento. La parte principal que debe completar es la implementación de quicksort en el archivo:
+
+\begin{verbatim}
+src/quicksort.c
+\end{verbatim}
+
+\section{Actividad principal}
+
+Complete la función de partición de quicksort. Puede usar como pivote el último elemento del subarreglo. La partición debe reordenar los elementos de modo que, al finalizar, los elementos menores o iguales que el pivote queden a su izquierda y los mayores queden a su derecha. La función debe devolver la posición final del pivote.
+
+Una vez implementada la partición, compile el proyecto con:
+
+\begin{verbatim}
+make
+\end{verbatim}
+
+Luego ejecute una prueba rápida:
+
+\begin{verbatim}
+make test
+\end{verbatim}
+
+Toda línea producida por el programa debe terminar con \texttt{sorted = 1}. Si alguna ejecución produce \texttt{sorted = 0}, el algoritmo no está ordenando correctamente y los tiempos obtenidos no deben considerarse válidos.
+
+\section{Experimento}
+
+Ejecute el experimento pequeño incluido en el repositorio:
+
+\begin{verbatim}
+make run
+\end{verbatim}
+
+El programa generará un archivo CSV en:
+
+\begin{verbatim}
+results/results.csv
+\end{verbatim}
+
+El archivo tendrá el siguiente formato:
+
+\begin{verbatim}
+algorithm,inputType,n,seed,timeSeconds,sorted
+\end{verbatim}
+
+Los tipos de entrada considerados son:
+
+\begin{enumerate}[label=\alph*)]
+  \item \texttt{random}: arreglo aleatorio con elementos distintos.
+  \item \texttt{sorted}: arreglo ya ordenado.
+  \item \texttt{reversed}: arreglo inversamente ordenado.
+  \item \texttt{repeated}: arreglo con muchos elementos repetidos.
+\end{enumerate}
+
+\section{Gráficos}
+
+Genere los gráficos usando:
+
+\begin{verbatim}
+gnuplot scripts/plot.gp
+\end{verbatim}
+
+El script generará, como mínimo, los siguientes gráficos para la entrada aleatoria:
+
+\begin{enumerate}[label=\arabic*.]
+  \item Tiempo promedio de quicksort y merge sort.
+  \item Tiempo normalizado por $n\log_2 n$.
+  \item Razón de tiempos:
+  \[
+  R(n)=\frac{T_{\text{merge}}(n)}{T_{\text{quick}}(n)}.
+  \]
+\end{enumerate}
+
+Si $R(n)>1$, quicksort fue más rápido en promedio para ese tamaño de entrada. Si $R(n)<1$, merge sort fue más rápido.
+
+\section{Distribución sugerida del tiempo}
+
+\begin{enumerate}[label=\arabic*.]
+  \item 10 minutos: revisar la estructura del repositorio y compilar el proyecto.
+  \item 30 minutos: completar la partición de quicksort y verificar la corrección.
+  \item 20 minutos: ejecutar el experimento y revisar el archivo CSV.
+  \item 15 minutos: generar los gráficos.
+  \item 15 minutos: escribir una breve interpretación de los resultados.
+\end{enumerate}
+
+\section{Preguntas para el informe breve}
+
+Responda en un texto corto, de no más de una página:
+
+\begin{enumerate}[label=\arabic*.]
+  \item ¿Quicksort ordenó correctamente todos los casos ejecutados?
+  \item Para entradas aleatorias, ¿qué algoritmo fue más rápido en promedio?
+  \item ¿La razón $R(n)$ aumenta, disminuye o se mantiene relativamente estable cuando crece $n$?
+  \item ¿Qué ocurrió con las entradas ordenadas e inversamente ordenadas?
+  \item ¿Qué ocurrió con las entradas con muchos elementos repetidos?
+  \item ¿Qué detalles de implementación podrían cambiar los resultados obtenidos?
+\end{enumerate}
+
+\end{document}
